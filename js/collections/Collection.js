@@ -11,4 +11,14 @@ export class Collection {
         this.topic = topic;
         this.date = date;
     }
+
+    /**
+     * Creates a Collection from a deserialized JSON object
+     * 
+     * @param {any} json Deserialized JSON object
+     * @returns {Collection}
+     */
+    static fromJson(json) {
+        return new Collection(json.name, json.topic, new Date(json.date));
+    }
 }

@@ -19,10 +19,7 @@ export class StorageCollectionManager extends BaseCollectionManager {
         super();
         this.#storage = storage;
         const collections = JSON.parse(this.#storage.getItem(COLLECTIONS_KEY)) || [];
-        for (const collection of collections) {
-            // Convert back to a collection, because type information is not preserved in JSON
-            this.#collections.push(new Collection(collection.name, collection.topic, new Date(collection.date)));
-        }
+        this.#collections = collections.map(collection => Collection.fromJson(collection));
     }
 
     #save() {
