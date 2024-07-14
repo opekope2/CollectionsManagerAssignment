@@ -19,7 +19,7 @@ collectionTemplate.id = null;
 const collectionItemsTemplate = _("collectionItemsTemplate");
 collectionItemsTemplate.id = null;
 /**
- * @type {HTMLTableRowElement}
+ * @type {HTMLLIElement}
  */
 const collectionItemTemplate = _("collectionItemTemplate");
 collectionItemTemplate.id = null;
@@ -87,7 +87,7 @@ function loadCollectionsInto(table) {
         const collectionItemsTable = collectionItemsRow.querySelector('[data-template="colletionItem"]');
         for (const item of collection.items) {
             /**
-             * @type {HTMLTableRowElement}
+             * @type {HTMLLIElement}
              */
             const collectionItemRow = collectionItemTemplate.cloneNode(true);
             collectionItemRow.querySelector('[data-template="name"]').textContent = item.name;

@@ -79,20 +79,19 @@
             </tr>
             <tr id="collectionItemsTemplate">
                 <td colspan="4">
-                    <table class="table mb-0">
-                        <thead>
-                            <tr>
-                                <th>Név</th>
-                            </tr>
-                        </thead>
-                        <tbody data-template="colletionItem"></tbody>
-                    </table>
+                    <ul class="list-group mb-0" data-template="colletionItem">
+                        <li class="list-group-item">
+                            <h4>Gyűjtemény elemei</h4>
+                        </li>
+                    </ul>
                 </td>
             </tr>
-            <tr id="collectionItemTemplate">
-                <td data-template="name"></td>
-            </tr>
         </table>
+        <ul>
+            <li class="list-group-item" id="collectionItemTemplate">
+                <span data-template="name"></span>
+            </li>
+        </ul>
     </div>
 
     <script type="module" src="js/index.js"></script>
