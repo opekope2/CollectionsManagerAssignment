@@ -73,7 +73,24 @@
                 <td>
                     <button type="button" class="btn btn-outline-secondary" data-template="rename">Gyűjtemény
                         átnevezése</button>
+                    <button type="button" class="btn btn-outline-secondary" data-template="addItem">Elem
+                        hozzáadása</button>
                 </td>
+            </tr>
+            <tr id="collectionItemsTemplate">
+                <td colspan="4">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Név</th>
+                            </tr>
+                        </thead>
+                        <tbody data-template="colletionItem"></tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr id="collectionItemTemplate">
+                <td data-template="name"></td>
             </tr>
         </table>
     </div>
