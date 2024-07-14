@@ -93,6 +93,8 @@
                         átnevezése</button>
                     <button type="button" class="btn btn-outline-secondary" data-template="addItem">Elem
                         hozzáadása</button>
+                    <button type="button" class="btn btn-outline-danger" data-template="removeItems" disabled>Kijelölt
+                        elemek törlése</button>
                 </td>
             </tr>
             <tr id="collectionItemsTemplate">
@@ -107,7 +109,8 @@
         </table>
         <ul>
             <li class="list-group-item" id="collectionItemTemplate">
-                <span data-template="name"></span>
+                <input class="form-check-input me-1" type="checkbox" data-template="nameCheckbox">
+                <label class="form-check-label" for="firstCheckbox" data-template="nameLabel"></label>
                 <span class="dropdown right">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
                         aria-expanded="false">

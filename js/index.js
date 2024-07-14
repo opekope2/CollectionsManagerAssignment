@@ -62,7 +62,11 @@ function loadCollectionsInto(table) {
     table.replaceChildren();
 
     const collections = collectionManager.getCollections();
-    for (const collection of collections) {
+    for (const [i, collection] of collections.entries()) {
+        /**
+         * @type {Item[]}
+         */
+        const itemsToRemove = [];
         /**
          * @type {HTMLTableRowElement}
          */
@@ -86,6 +90,21 @@ function loadCollectionsInto(table) {
             collectionManager.updateCollection(collection);
             reloadCollections();
         };
+        /**
+         * @type {HTMLButtonElement}
+         */
+        const removeItemsButton = collectionRow.querySelector('[data-template="removeItems"]');
+        removeItemsButton.onclick = () => {
+            if (confirm(`Biztosan törölsz ${itemsToRemove.length} elemet?`)) {
+                for (const itemToRemove of itemsToRemove) {
+                    collection.removeItem(itemToRemove);
+                }
+                itemsToRemove.splice(0, itemsToRemove.length);
+                removeItemsButton.disabled = true;
+                collectionManager.updateCollection(collection);
+                reloadCollections();
+            }
+        };
 
         table.appendChild(collectionRow);
 
@@ -96,12 +115,36 @@ function loadCollectionsInto(table) {
          */
         const collectionItemsRow = collectionItemsTemplate.cloneNode(true);
         const collectionItemsTable = collectionItemsRow.querySelector('[data-template="colletionItem"]');
-        for (const item of collection.items) {
+        for (const [j, item] of collection.items.entries()) {
             /**
              * @type {HTMLLIElement}
              */
             const collectionItemRow = collectionItemTemplate.cloneNode(true);
-            collectionItemRow.querySelector('[data-template="name"]').textContent = item.name;
+            /**
+             * @type {HTMLInputElement}
+             */
+            const nameCheckbox = collectionItemRow.querySelector('[data-template="nameCheckbox"]');
+            /** 
+             * @type {HTMLLabelElement}
+             */
+            const nameLabel = collectionItemRow.querySelector('[data-template="nameLabel"]');
+            nameCheckbox.id = `collection${i}item${j}`;
+            nameCheckbox.onchange = () => {
+                if (nameCheckbox.checked) {
+                    itemsToRemove.push(item);
+                    removeItemsButton.disabled = false;
+                } else {
+                    const index = itemsToRemove.indexOf(item);
+                    if (index > -1) {
+                        itemsToRemove.splice(index, 1);
+                    }
+                    if (!itemsToRemove.length) {
+                        removeItemsButton.disabled = true;
+                    }
+                }
+            }
+            nameLabel.htmlFor = `collection${i}item${j}`;
+            nameLabel.textContent = item.name;
             collectionItemRow.querySelector('[data-template="move"]').onclick = () => {
                 const otherCollections = collectionManager.getCollections();
 
