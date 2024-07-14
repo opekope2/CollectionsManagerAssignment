@@ -1,12 +1,17 @@
 import { Collection } from "./collections/Collection.js";
 import { BaseCollectionManager } from "./collections/manager/BaseCollectionManager.js";
 import { StorageCollectionManager } from "./collections/manager/StorageCollectionManager.js";
-import { _, element, td, tr } from "./util.js";
+import { _ } from "./util.js";
 
 /**
  * @type {BaseCollectionManager}
  */
 const collectionManager = new StorageCollectionManager(window.localStorage);
+/**
+ * @type {HTMLTableRowElement}
+ */
+const collectionTemplate = _("collectionTemplate");
+collectionTemplate.id = null;
 
 _("createCollectionForm").onsubmit = event => {
     /**
@@ -40,27 +45,23 @@ function loadCollectionsInto(table) {
     // Populate children
     const collections = collectionManager.getCollections();
     for (const collection of collections) {
-        const title = td(collection.name),
-            topic = td(collection.topic),
-            date = td(collection.date.toDateString()),
-            operations = td(null);
-        const rename = element("button", button => {
-            button.type = "button";
-            button.classList.add("btn", "btn-outline-secondary");
-            button.textContent = "Átnevezés";
-            button.onclick = () => {
-                const name = prompt("Gyűjtemény átnevezése", collection.name);
-                if (!name) return;
+        /**
+         * @type {HTMLTableRowElement}
+         */
+        const collectionRow = collectionTemplate.cloneNode(true);
+        collectionRow.querySelector('[data-template="name"]').textContent = collection.name;
+        collectionRow.querySelector('[data-template="title"]').textContent = collection.topic;
+        collectionRow.querySelector('[data-template="date"]').textContent = collection.date.toDateString();
+        collectionRow.querySelector('[data-template="rename"]').onclick = () => {
+            const name = prompt("Gyűjtemény átnevezése", collection.name);
+            if (!name) return;
 
-                collection.name = name;
-                collectionManager.updateCollection(collection);
-                reloadCollections();
-            };
-        });
+            collection.name = name;
+            collectionManager.updateCollection(collection);
+            reloadCollections();
+        };
 
-        operations.appendChild(rename);
-
-        table.appendChild(tr([title, topic, date, operations]));
+        table.appendChild(collectionRow);
     }
 }
 
