@@ -8,6 +8,12 @@ import { _ } from "./util.js";
  * @type {BaseCollectionManager}
  */
 const collectionManager = new StorageCollectionManager(window.localStorage);
+
+/**
+ * @type {HTMLDivElement}
+ */
+const moveItemList = _("moveItemList");
+
 /**
  * @type {HTMLTableRowElement}
  */
@@ -23,6 +29,11 @@ collectionItemsTemplate.id = null;
  */
 const collectionItemTemplate = _("collectionItemTemplate");
 collectionItemTemplate.id = null;
+/**
+ * @type {HTMLButtonElement}
+ */
+const moveItemButtonTemplate = _("moveItemButtonTemplate");
+moveItemButtonTemplate.id = null;
 
 _("createCollectionForm").onsubmit = event => {
     /**
@@ -91,6 +102,45 @@ function loadCollectionsInto(table) {
              */
             const collectionItemRow = collectionItemTemplate.cloneNode(true);
             collectionItemRow.querySelector('[data-template="name"]').textContent = item.name;
+            collectionItemRow.querySelector('[data-template="move"]').onclick = () => {
+                const otherCollections = collectionManager.getCollections();
+
+                moveItemList.replaceChildren();
+                for (const otherCollection of otherCollections) {
+                    if (otherCollection === collection) continue;
+                    /**
+                     * @type {HTMLButtonElement}
+                     */
+                    const moveItemToCollection = moveItemButtonTemplate.cloneNode(true);
+                    moveItemToCollection.textContent = otherCollection.name;
+                    moveItemToCollection.onclick = () => {
+                        collection.removeItem(item);
+                        collectionManager.updateCollection(collection);
+
+                        otherCollection.addItem(item);
+                        collectionManager.updateCollection(otherCollection);
+
+                        reloadCollections();
+                    };
+
+                    moveItemList.appendChild(moveItemToCollection);
+                }
+            };
+            collectionItemRow.querySelector('[data-template="rename"]').onclick = () => {
+                const name = prompt("Elem átnevezése", item.name);
+                if (!name) return;
+
+                item.name = name;
+                collectionManager.updateCollection(collection);
+                reloadCollections();
+            };
+            collectionItemRow.querySelector('[data-template="delete"]').onclick = () => {
+                if (confirm("Biztosan törlöd?")) {
+                    collection.removeItem(item);
+                    collectionManager.updateCollection(collection);
+                    reloadCollections();
+                }
+            };
 
             collectionItemsTable.appendChild(collectionItemRow);
         }
