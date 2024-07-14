@@ -37,12 +37,8 @@ reloadCollections();
  * @param {HTMLTableSectionElement} table The table element to append the collections into
  */
 function loadCollectionsInto(table) {
-    // Clear children
-    while (table.firstChild) {
-        table.removeChild(table.firstChild);
-    }
+    table.replaceChildren();
 
-    // Populate children
     const collections = collectionManager.getCollections();
     for (const collection of collections) {
         /**
