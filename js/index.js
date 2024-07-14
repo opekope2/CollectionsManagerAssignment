@@ -18,22 +18,22 @@ const moveItemList = _("moveItemList");
  * @type {HTMLTableRowElement}
  */
 const collectionTemplate = _("collectionTemplate");
-collectionTemplate.id = null;
+collectionTemplate.removeAttribute("id");
 /**
  * @type {HTMLTableRowElement}
  */
 const collectionItemsTemplate = _("collectionItemsTemplate");
-collectionItemsTemplate.id = null;
+collectionItemsTemplate.removeAttribute("id");
 /**
  * @type {HTMLLIElement}
  */
 const collectionItemTemplate = _("collectionItemTemplate");
-collectionItemTemplate.id = null;
+collectionItemTemplate.removeAttribute("id");
 /**
  * @type {HTMLButtonElement}
  */
 const moveItemButtonTemplate = _("moveItemButtonTemplate");
-moveItemButtonTemplate.id = null;
+moveItemButtonTemplate.removeAttribute("id");
 
 _("createCollectionForm").onsubmit = event => {
     /**
